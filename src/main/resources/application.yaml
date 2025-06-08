@@ -1,0 +1,8 @@
+spring:
+  ai:
+    mcp:
+      server:
+        capabilities:
+          prompt: false
+          completion: false
+          resource: false
