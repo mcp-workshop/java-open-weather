@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.springframework.ai.tool.annotation.Tool;
-import org.springframework.ai.tool.annotation.ToolParam;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -22,13 +21,8 @@ public class WeatherService {
     this.restClient = RestClient.builder().baseUrl("https://api.open-meteo.com/v1").build();
   }
 
-  @Tool(
-      description =
-          "Get the temperatures (in celsius), the rain percentage and the precipitation probability for a specific location for the next 7 days, hourly")
-  public WeatherPrediction getPrediction(
-      @ToolParam(description = "The location latitude") double latitude,
-      @ToolParam(description = "The location longitude") double longitude,
-      @ToolParam(description = "The local datetime of the prediction") LocalDateTime time) {
+  @Tool
+  public WeatherPrediction getPrediction(double latitude, double longitude, LocalDateTime time) {
     logger.info(
         "Getting prediction for location lat: {}, long: {} at time {}", latitude, longitude, time);
     WeatherResponse weatherResponse =
@@ -54,7 +48,7 @@ public class WeatherService {
             .atZone(ZoneId.of("Europe/London"))
             .toLocalDateTime();
     WeatherPrediction weatherPrediction = weatherPredictions.get(dateToCheck);
-    logger.info("WeatherPrediction is {}", weatherPrediction);
+    logger.info("{}", weatherPrediction);
     return weatherPrediction;
   }
 
